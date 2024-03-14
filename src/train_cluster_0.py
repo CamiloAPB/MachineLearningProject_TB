@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.tree import DecisionTreeRegressor
 import joblib
 import re
+import pickle
 
 # Carga de datos
 df = pd.read_csv("C:\\Users\\camil\\Documents\\GitHub\\MachineLearningProject_TB\\src\\data\\raw\\popular_python_projects.csv")
@@ -55,7 +56,7 @@ df = df.merge(vaders, how="left")
 
 df.drop(columns=['neg', 'neu', 'pos'], inplace=True)
 
-signos = re.compile("(\.)|(\;)|(\:)|(\!)|(\?)|(\¿)|(\@)|(\,)|(\)|(\()|(\))|(\[)|(\])|(\d+)")
+signos = re.compile(r"(\.)|(\;)|(\:)|(\!)|(\?)|(\¿)|(\@)|(\,)|(\))|(\()|(\))|(\[)|(\])|(\d+)")
 
 def signs_description(des):
     return signos.sub('', des.lower())
@@ -149,11 +150,11 @@ df_cluster_2 = df_cluster[df_cluster["cluster_result"] == 2]
 
 
 # Separación en train y test
-train_0, test_0 = train_test_split(df_cluster_0, test_size=0.2, random_state=42)
+train_1, test_1 = train_test_split(df_cluster_0, test_size=0.2, random_state=42)
 
 # Separación en train y val
-X = train_0.drop(columns="forks")
-y = train_0["forks"]
+X = train_1.drop(columns="forks")
+y = train_1["forks"]
 
 X_train, X_val, y_train, y_val= train_test_split(X, y, test_size=0.2, random_state=42)
 
@@ -182,4 +183,5 @@ dtr = grid_search.best_estimator_
 
 # Guardando el modelo
 
-modelo = joblib.dump(dtr, "mymodel_0.pkl")
+with open('mymodel_0.pkl', 'wb') as f:
+    pickle.dump(dtr, f)

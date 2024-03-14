@@ -14,6 +14,7 @@ from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.tree import DecisionTreeRegressor
 import joblib
 import re
+import pickle
 
 # Carga de datos
 df = pd.read_csv("C:\\Users\\camil\\Documents\\GitHub\\MachineLearningProject_TB\\src\\data\\raw\\popular_python_projects.csv")
@@ -182,4 +183,5 @@ dtr = grid_search.best_estimator_
 
 # Guardando el modelo
 
-modelo = joblib.dump(dtr, "mymodel_1.pkl")
+with open('mymodel_1.pkl', 'wb') as f:
+    pickle.dump(dtr, f)
